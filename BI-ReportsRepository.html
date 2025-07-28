@@ -20,7 +20,6 @@
             overflow: hidden;
         }
 
-        /* Barra de navegación */
         #navbar {
             background-color: #1d1d1b;
             color: white;
@@ -45,37 +44,33 @@
             margin-right: 40px;
         }
 
-        /* Contenedor del reporte */
         #report-container {
-            position: fixed; /* Fijo en la pantalla */
-            top: 0; /* No se ajusta para dejar espacio para la barra */
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 100vh; /* Ocupa toda la altura de la pantalla */
+            height: 100vh;
             overflow: hidden;
-            display: none; /* Oculto por defecto */
+            display: none;
         }
 
-        /* Iframe del reporte */
         #report-frame {
             width: 100%;
             height: 100%;
             position: relative;
-            z-index: 1; /* Asegura que esté debajo de la barra blanca */
+            z-index: 1;
         }
 
-        /* Barra blanca sobre el reporte */
         #white-bar {
-            position: fixed; /* Fija la barra en la parte inferior */
+            position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             height: 3.5vh;
             background-color: white;
-            z-index: 10; /* Asegura que esté sobre el reporte */
+            z-index: 10;
         }
 
-        /* GIF animado en la esquina inferior izquierda */
         #animated-gif {
             position: fixed;
             bottom: 10px;
@@ -85,7 +80,6 @@
             z-index: 100;
         }
 
-        /* Estilo para los reportes y correo */
         #main-content {
             display: flex;
             flex-direction: column;
@@ -103,7 +97,7 @@
             margin-top: 20px;
         }
 
-        #access-form input {
+        #access-form input, #access-form select {
             padding: 10px;
             margin-top: 10px;
             font-size: 16px;
@@ -130,100 +124,87 @@
         #error-message {
             color: red;
             display: none;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <!-- Barra de navegación -->
     <div id="navbar">
         <h1>IR Reports</h1>
         <img src="https://th.bing.com/th/id/OIP.E0Ma8wUHT9O6QhlJrUl7IQHaDI?rs=1&pid=ImgDetMain" alt="Logo">
     </div>
 
-    <!-- Lista de reportes y formulario de acceso -->
     <div id="main-content">
         <h2>Select Report</h2>
         <form id="access-form">
-            <label for="report">Choose a report:</label>
-            <br>
+            <label for="report">Choose a report:</label><br>
             <select id="report">
                 <option value="sales-report">IR Sales Analysis Report</option>
                 <option value="rdb-sales-report">IR&RDB Sales Analysis Report</option>
-            </select>
-            <br><br>
-            <label for="email">Enter your email:</label>
-            <br>
-            <input type="email" id="email" placeholder="Enter your email">
-            <br>
+            </select><br><br>
+
+            <label for="email">Enter your email:</label><br>
+            <input type="email" id="email" placeholder="Enter your email"><br>
+
+            <label for="password">Enter your password:</label><br>
+            <input type="password" id="password" placeholder="Enter your password"><br>
+
             <button type="button" onclick="validateAccess()">Enter</button>
-            <p id="error-message">Unauthorized email. Please try again.</p>
+            <p id="error-message">Unauthorized email or incorrect password.</p>
         </form>
     </div>
 
-    <!-- GIF animado en la esquina inferior izquierda -->
     <img id="animated-gif" src="https://media0.giphy.com/media/D4uJFngv7IeqUKnjAX/giphy.gif" alt="GIF Animado">
 
-    <!-- Contenedor del reporte -->
     <div id="report-container">
         <iframe id="report-frame" src="" allowFullScreen="true"></iframe>
-        <!-- Barra blanca sobre el reporte en la parte inferior -->
         <div id="white-bar"></div>
     </div>
 
     <script>
-    // Listas de correos permitidos para cada reporte
-    const allowedEmails = {
-        "sales-report": [
-            "melanie.romero@oppo-aed.co",
-            "luis.garcia@oppo-aed.co",
-            "duke@oppo-aed.co",
-            "jeison.monsalve@oppo-aed.co",
-            "manuel.cubillos@oppo-aed.co",
-            "fisher.yu@oppo-aed.co",
-            "junizhang@oppo-aed.co",
-            "ulysses@oppo-aed.co",
-            "zhang.sitong@oppo-aed.co",
-            "yizhan.zhang@oppo-aed.co",
-            "hu.qi@oppo-aed.co",
-            "liu.he@oppo-aed.co",
-            "carolina.lopez@oppo-aed.co",
-            "leidy.bocanegra@oppo-aed.co",
-            "john.martinez@oppo-aed.co",
-            "regionalmanager.meta1@oppo-aed.co",
-            "jose.rodriguez@oppo-aed.co",
-            "adalberto.ramos@oppo-aed.co",
-            "sindy.chaparro@oppo-aed.co",
-            "yesid.usuga@oppo-aed.co",
-            "vickyliu@oppo-aed.co",
-            "andres.varon@oppo-aed.co",
-            "angie.florez@oppo-aed.co",
-            "jhony.perez@oppo-aed.co",
-            "gina.gonzalez@oppo-aed.co",
-            "juan.sanabria@oppo-aed.co"
-            
-        ],
-        "rdb-sales-report": [
-            "duke@oppo-aed.co",
-            "manuel.cubillos@oppo-aed.co",
-            "luis.garcia@oppo-aed.co",
-            "jeison.monsalve@oppo-aed.co",
-            "fisher.yu@oppo-aed.co",
-            "junizhang@oppo-aed.co",
-            "ulysses@oppo-aed.co",
-            "zhang.sitong@oppo-aed.co",
-            "yizhan.zhang@oppo-aed.co",
-            "hu.qi@oppo-aed.co",
-            "liu.he@oppo-aed.co",
-            "vickyliu@oppo-aed.co",
-            "melanie.romero@oppo-aed.co",
-            "andres.varon@oppo-aed.co",
-            "angie.florez@oppo-aed.co",
-            "jhony.perez@oppo-aed.co",
-            "gina.gonzalez@oppo-aed.co",
-            "santiago.barrera@oppo-aed.co",
-            "juan.sanabria@oppo-aed.co"
-        ]
-    };
+        const allowedUsers = {
+            "melanie.romero@oppo-aed.co": {
+                password: "BIreport2025*",
+                reports: ["sales-report", "rdb-sales-report"]
+            },
+            "manuel.cubillos@oppo-aed.co": {
+                password: "abcd",
+                reports: ["sales-report", "rdb-sales-report"]
+            },
+            "jeison.monsalve@oppo-aed.co": {
+                password: "BIreport2025*",
+                reports: ["sales-report", "rdb-sales-report"]
+            }
+            // Agrega más usuarios aquí con sus contraseñas y reportes permitidos
+        };
+
+        const reportUrls = {
+            "sales-report": "https://app.powerbi.com/view?r=eyJrIjoiZGI1Njk3ZGEtNWJiMS00MDIwLTliYWEtZmE0OWY3NmYwYjk0IiwidCI6IjkyNDJjYWMwLTljODktNDFkYS04OGY4LWNjMjBiMjNiNmQ4ZCJ9&language=en-EN",
+            "rdb-sales-report": "https://app.powerbi.com/view?r=eyJrIjoiNjM1N2I0YTAtZjk5ZS00ZTBjLWFiMjQtNDRlNDU4MzEyZWE2IiwidCI6IjkyNDJjYWMwLTljODktNDFkYS04OGY4LWNjMjBiMjNiNmQ4ZCJ9&language=en-EN"
+        };
+
+        function validateAccess() {
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = document.getElementById("password").value.trim();
+            const report = document.getElementById("report").value;
+            const errorMessage = document.getElementById("error-message");
+
+            const user = allowedUsers[email];
+
+            if (user && user.password === password && user.reports.includes(report)) {
+                document.getElementById("navbar").style.display = "none";
+                document.getElementById("main-content").style.display = "none";
+                document.getElementById("animated-gif").style.display = "none";
+                document.getElementById("report-container").style.display = "block";
+                document.getElementById("report-frame").src = reportUrls[report];
+            } else {
+                errorMessage.style.display = "block";
+                errorMessage.textContent = "Unauthorized email or incorrect password.";
+            }
+        }
+    </script>
+</body>
+</html>
 
     function validateAccess() {
         const inputEmail = document.getElementById("email").value.trim().toLowerCase();
