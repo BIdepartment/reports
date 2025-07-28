@@ -205,38 +205,3 @@
     </script>
 </body>
 </html>
-
-    function validateAccess() {
-        const inputEmail = document.getElementById("email").value.trim().toLowerCase();
-        const errorMessage = document.getElementById("error-message");
-        const report = document.getElementById("report").value;
-
-        // Verificar si el correo pertenece a la lista del reporte seleccionado
-        if (allowedEmails[report] && allowedEmails[report].includes(inputEmail)) {
-            // Ocultamos la barra de navegación
-            document.getElementById("navbar").style.display = "none";
-
-            // Ocultamos el contenido principal
-            document.getElementById("main-content").style.display = "none";
-
-            // Ocultamos el GIF animado
-            document.getElementById("animated-gif").style.display = "none";
-
-            // Mostramos el reporte
-            document.getElementById("report-container").style.display = "block";
-
-            // Asignamos el URL del reporte según la selección
-            const reportUrls = {
-                "sales-report": "h-",
-                "rdb-sales-report": "-"
-            };
-
-            document.getElementById("report-frame").src = reportUrls[report];
-
-        } else {
-            errorMessage.style.display = "block";
-        }
-    }
-    </script>
-</body>
-</html>
